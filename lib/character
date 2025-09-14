@@ -1,0 +1,62 @@
+class Character {
+  String name;
+  int level;
+  int maxHealth;
+  int _health;
+
+  // Constructor using named parameters for clarity
+  Character({
+    required this.name,
+    required this.level,
+    required int health,
+  })  : assert(level > 0, 'Level must be at least 1'),
+        assert(health > 0, 'Health must be positive'),
+        _health = health,
+        maxHealth = health;
+
+  // Getter for health (encapsulation)
+  int get health => _health;
+
+  // Setter with validation: keeps health between 0 and maxHealth
+  set health(int value) {
+    if (value <= 0) {
+      _health = 0;
+    } else if (value > maxHealth) {
+      _health = maxHealth;
+    } else {
+      _health = value;
+    }
+  }
+
+  // Computed property
+  bool get isAlive => _health > 0;
+
+  // Method to apply damage
+  void takeDamage(int damage) {
+    if (damage <= 0) {
+      print("$name ignores weak damage.");
+      return;
+    }
+    health -= damage; // uses setter validation
+    print("$name takes $damage damage! Health: $health/$maxHealth");
+  }
+
+  // Method to heal
+  void heal(int amount) {
+    if (amount <= 0) {
+      print("Heal amount must be positive.");
+      return;
+    }
+    health += amount; // uses setter
+    print("$name heals for $amount. Health: $health/$maxHealth");
+  }
+
+  // Description of character
+  String describe() {
+    return "$name (Level $level) - Health: $health/$maxHealth";
+  }
+
+  // Cleaner output when printing the object
+  @override
+  String toString() => describe();
+}
